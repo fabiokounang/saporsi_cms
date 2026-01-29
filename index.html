@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saporsi By Kyojin | Smart Vending Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;family=Nunito:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;family=Nunito:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" />
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md vending-shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo --> 
+           <a href="#home" class="flex items-center space-x-3"> 
+            <img src="./images/logo.png" alt="Saporsi By Kyojin" class="w-14 h-14 rounded-2xl border-3 border-orange-200">
+            <div><span class="font-display text-2xl font-bold text-red-700">SAPORSI</span> <span
+                class="text-xs block -mt-1 font-bold text-amber-700">By Kyojin</span>
+            </div>
+          </a>
+          
+          <!-- Desktop Navigation -->
+          <div class="hidden lg:flex items-center space-x-8">
+            <a href="#home" class="font-bold text-gray-700 hover:text-orange-500 transition-colors">Home</a>
+            <a href="#about" class="font-bold text-gray-700 hover:text-orange-500 transition-colors">About</a> 
+            <a href="#services" class="font-bold text-gray-700 hover:text-orange-500 transition-colors">Services</a> 
+            <a href="#gallery" class="font-bold text-gray-700 hover:text-orange-500 transition-colors">Gallery</a> 
+            <a href="#locations" class="font-bold text-gray-700 hover:text-orange-500 transition-colors">Locations</a> 
+            <a href="#partners" class="font-bold text-gray-700 hover:text-orange-500 transition-colors">Partners</a>
+            <!-- <a href="#contact-form" 
+              class="font-bold text-gray-700 hover:text-orange-500 transition-colors"
+              data-i18n="nav_contact">Contact Form</a> -->
+          </div>
+          
+          <!-- Language Toggle & CTA -->
+          <div class="hidden lg:flex items-center space-x-4">
+            <div class="flex items-center border-3 border-orange-200 rounded-full px-1 py-1 bg-white"><button
+                id="lang-id" onclick="setLanguage('id')"
+                class="px-4 py-2 text-sm font-bold rounded-full transition-all">ID</button> <button id="lang-en"
+                onclick="setLanguage('en')" class="px-4 py-2 text-sm font-bold rounded-full transition-all">EN</button>
+            </div><a href="#contact" class="btn-vending text-white text-sm" data-i18n="nav_cta">Book a Machine 🎉</a>
+          </div>
+          
+          <!-- Mobile Menu Button --> 
+          <button id="mobile-menu-btn" onclick="toggleMobileMenu()"
+            class="lg:hidden p-2 rounded-xl hover:bg-orange-50 transition-colors"> <img
+              src="https://api.iconify.design/mdi/menu.svg?color=%23FF6B35&amp;width=32&amp;height=32" alt="Menu"
+              class="w-8 h-8" onerror="this.style.display='none'"> 
+          </button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-80 h-full bg-white shadow-2xl lg:hidden z-50">
+        <div class="p-6" id="m-menu"><button onclick="toggleMobileMenu()"
+            class="absolute top-6 right-6 p-2 rounded-xl hover:bg-orange-50"> <img
+              src="https://api.iconify.design/mdi/close.svg?color=%23FF6B35&amp;width=32&amp;height=32" alt="Close"
+              class="w-8 h-8" onerror="this.style.display='none'"> </button>
+          <div class="mt-16 space-y-4">
+            <a href="#home" onclick="toggleMobileMenu();"
+              class="block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500"
+              data-i18n="nav_home">Home</a>
+              <a href="#about" onclick="toggleMobileMenu()" class="block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500" data-i18n="nav_about">About</a>
+              <a href="#services" onclick="toggleMobileMenu()" class="block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500" data-i18n="nav_services">Services</a>
+              <a href="#gallery" onclick="toggleMobileMenu()" class="block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500" data-i18n="nav_gallery">Gallery</a>
+              <a href="#locations" onclick="toggleMobileMenu()" class="block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500" data-i18n="nav_locations">Locations</a>
+              <a href="#partners" onclick="toggleMobileMenu()" class="block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500" data-i18n="nav_partners">Partners</a>
+            <div class="flex items-center space-x-2 py-4"><button id="mobile-lang-id" onclick="setLanguage('id')"
+                class="px-4 py-2 text-sm font-bold rounded-full border-2 border-orange-200">ID</button> <button
+                id="mobile-lang-en" onclick="setLanguage('en')"
+                class="px-4 py-2 text-sm font-bold rounded-full border-2 border-orange-200">EN</button>
+            </div><a href="#contact" onclick="toggleMobileMenu()"
+              class="btn-vending block text-center text-white text-sm mt-4" data-i18n="nav_cta">Book a Machine 🎉</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Homepage Section -->
+    <div id="page-home" class="page-section active">
+      <!-- Hero Section -->
+      <section id="home" class="min-h-screen flex items-center pt-12 pb-20 vending-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div class="grid lg:grid-cols-2 lg:gap-16 md:gap-8 sm:gap-8 items-center">
+            <div>
+              <div class="vending-badge pulse-badge mb-6"><img
+                  src="https://api.iconify.design/mdi/lightning-bolt.svg?color=white&amp;width=24&amp;height=24"
+                  alt="Lightning" class="w-6 h-6" onerror="this.style.display='none'"> <span
+                  data-i18n="hero_badge" id="badge-headline">Smart Vending Solutions</span>
+              </div>
+              <h1 id="hero-headline"
+                class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-800"
+                data-i18n="hero_headline">Snack Happy, Vend Smart! 🍫</h1>
+              <p id="hero-subheadline" class="font-text text-lg sm:text-xl leading-relaxed mb-5 text-gray-600"
+                data-i18n="hero_subheadline">Your 24/7 partner for delicious snacks and drinks! We bring the ultimate
+                vending experience with cashless payments, strategic locations, and the tastiest treats.</p>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a style="width: 100%;" href="#contact" class="btn-vending text-center"
+                  data-i18n="cta_book"> 🎉</a> 
+                  <!-- <a id="whatsapp-btn" href="#" target="_blank"
+                  rel="noopener noreferrer" class="btn-secondary text-center flex items-center justify-center gap-2">
+                  <img src="https://api.iconify.design/mdi/whatsapp.svg?color=%23FF6B35&amp;width=24&amp;height=24"
+                    alt="WhatsApp" class="w-6 h-6" onerror="this.style.display='none'"> <span
+                    data-i18n="cta_whatsapp">Chat With Us 💬</span> </a> -->
+              </div>
+              
+              <!-- Stats -->
+              <div class="mt-8 lg:grid grid-cols-3 gap-4">
+                <div class="stat-box">
+                  <div class="stat-number">
+                    50+
+                  </div>
+                  <div class="text-sm font-bold text-gray-600" data-i18n="stat_machines">
+                    Machines
+                  </div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">
+                    24/7
+                  </div>
+                  <div class="text-sm font-bold text-gray-600" data-i18n="stat_availability">
+                    Always Open
+                  </div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number">
+                    100%
+                  </div>
+                  <div class="text-sm font-bold text-gray-600" data-i18n="stat_cashless">
+                    Cashless
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Hero Image -->
+            <div class="relative">
+              <div class="relative rounded-3xl overflow-hidden vending-shadow-lg border-4 border-white">
+                <img src="./images/saporsi-2.png" alt="Modern Vending Machine" style="padding: 1.5rem" class="w-full h-auto" onerror="this.src='https://placehold.co/800x1000/FF6B35/FFFFFF?text=Vending+Machine&amp;font=fredoka'; this.alt='Vending Machine';">
+              </div>
+
+              <!-- Floating Badge -->
+              <div
+                class="small absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl vending-shadow-lg border-3 border-orange-200">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center icon-bounce">
+                    <img src="https://api.iconify.design/mdi/qrcode.svg?color=white&amp;width=32&amp;height=32"
+                      alt="QRIS" class="w-8 h-8" onerror="this.style.display='none'">
+                  </div>
+                  <div>
+                    <div class="text-sm font-display font-bold text-orange-500" data-i18n="hero_badge_text">
+                      QRIS Ready!
+                    </div>
+                    <div class="text-xs text-gray-600" data-i18n="hero_badge_sub">
+                      Scan &amp; Pay Easy
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- About Section -->
+      <section id="about" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16"><span class="vending-badge mb-6" data-i18n="about_label" id="about-badge">About 🎯</span>
+            <h2 id="about-title" class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mt-6 mb-6 text-gray-800"
+              data-i18n="about_title">Vending Made Yummy! 🍭</h2>
+            <p class="font-text text-lg leading-relaxed max-w-5xl mx-auto text-gray-600" id="about-description" data-i18n="about_desc1"></p>
+          </div><!-- Vision & Mission Cards -->
+          <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <div class="vision-mission-card">
+              <div class="flex items-start gap-4 mb-6"><img
+                  src="https://api.iconify.design/mdi/eye-outline.svg?color=white&amp;width=48&amp;height=48"
+                  alt="Vision" class="w-12 h-12 flex-shrink-0" onerror="this.style.display='none'">
+                <div>
+                  <h3 data-i18n="vision_title">Our Vision 👁️</h3>
+                  <p data-i18n="vision_desc">To become Indonesia's #1 vending machine partner, making snacks and drinks
+                    accessible anytime, anywhere through innovative technology!</p>
+                </div>
+              </div>
+            </div>
+            <div class="vision-mission-card"
+              style="background: linear-gradient(135deg, var(--color-secondary) 0%, #FFA726 100%);">
+              <div class="flex items-start gap-4 mb-6"><img
+                  src="https://api.iconify.design/mdi/target.svg?color=white&amp;width=48&amp;height=48" alt="Mission"
+                  class="w-12 h-12 flex-shrink-0" onerror="this.style.display='none'">
+                <div>
+                  <h3 data-i18n="mission_title">Our Mission 🎯</h3>
+                  <p data-i18n="mission_desc">To deliver end-to-end vending solutions with awesome service, real-time
+                    data, and maximum ROI for our brand partners!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Features Grid -->
+          <div class="snack-grid">
+            <div class="snack-card p-8">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mb-6">
+                <img src="https://api.iconify.design/mdi/map-marker-radius.svg?color=white&amp;width=32&amp;height=32"
+                  alt="Location" class="w-8 h-8" onerror="this.style.display='none'">
+              </div>
+              <h3 class="font-display text-xl font-bold mb-3 text-gray-800" data-i18n="about_feat1_title">Prime
+                Locations 📍</h3>
+              <p class="text-gray-600" data-i18n="about_feat1_desc">Strategic spots with high foot traffic for maximum
+                snack action!</p>
+            </div>
+            <div class="snack-card p-8">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-6">
+                <img src="https://api.iconify.design/mdi/cog-sync.svg?color=white&amp;width=32&amp;height=32"
+                  alt="Operations" class="w-8 h-8" onerror="this.style.display='none'">
+              </div>
+              <h3 class="font-display text-xl font-bold mb-3 text-gray-800" data-i18n="about_feat2_title">Full Service
+                ⚙️</h3>
+              <p class="text-gray-600" data-i18n="about_feat2_desc">We handle everything: logistics, refills, and 24/7
+                monitoring!</p>
+            </div>
+            <div class="snack-card p-8">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center mb-6">
+                <img src="https://api.iconify.design/mdi/chart-line.svg?color=white&amp;width=32&amp;height=32"
+                  alt="Analytics" class="w-8 h-8" onerror="this.style.display='none'">
+              </div>
+              <h3 class="font-display text-xl font-bold mb-3 text-gray-800" data-i18n="about_feat3_title">Real-Time Data
+                📊</h3>
+              <p class="text-gray-600" data-i18n="about_feat3_desc">Live sales reports and inventory tracking at your
+                fingertips!</p>
+            </div>
+            <div class="snack-card p-8">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center mb-6">
+                <img src="https://api.iconify.design/mdi/gift-outline.svg?color=white&amp;width=32&amp;height=32"
+                  alt="Activation" class="w-8 h-8" onerror="this.style.display='none'">
+              </div>
+              <h3 class="font-display text-xl font-bold mb-3 text-gray-800" data-i18n="about_feat4_title">Brand
+                Activation 🎁</h3>
+              <p class="text-gray-600" data-i18n="about_feat4_desc">Product sampling, launches, and epic marketing
+                campaigns!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Services Section -->
+      <section id="services" class="py-24 vending-pattern-mid">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <span class="vending-badge mb-6" id="services-badge"></span>
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mt-6 mb-6 text-gray-800" id="services-title"></h2>
+            <p class="text-lg leading-relaxed max-w-3xl mx-auto text-gray-600" id="services-description"></p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Service Card 1 -->
+            <div class="snack-card p-8 text-center">
+              <div
+                class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mx-auto mb-6 icon-bounce">
+                <img src="https://api.iconify.design/mdi/clock-fast.svg?color=white&amp;width=48&amp;height=48"
+                  alt="24/7" class="w-12 h-12" onerror="this.style.display='none'">
+              </div>
+              <h3 class="font-display text-2xl font-bold mb-4 text-gray-800">24/7
+                Availability ⏰</h3>
+              <p class="text-gray-600">Never close! Serve customers day and night without
+                staff!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section id="gallery" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <span class="vending-badge mb-6" data-i18n="gallery_label" id="gallery-badge"></span>
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mt-6 mb-6 text-gray-800" id="gallery-title"></h2>
+            <p class="text-lg leading-relaxed max-w-3xl mx-auto text-gray-600" id="gallery-description"></p>
+          </div>
+
+          <div id="lightgallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <a
+              href="https://images.unsplash.com/photo-1601599561213-832382fd07ba?w=1200&amp;h=1600&amp;fit=crop"
+              class="gallery-item aspect-square"
+              data-lightbox="vending-gallery"
+              data-title="Modern Vending Machine"
+            >
+              <img src="https://images.unsplash.com/photo-1601599561213-832382fd07ba?w=400&amp;h=400&amp;fit=crop" alt="Modern Vending Machine"
+                onerror="this.src='https://placehold.co/400x400/FF6B35/FFFFFF?text=Vending+1&amp;font=fredoka'; this.alt='Vending 1';">
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Locations Section -->
+      <section id="locations" class="py-24 vending-pattern-mid">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <span class="vending-badge mb-6" id="locations-badge"></span>
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mt-6 mb-6 text-gray-800"
+              id="locations-title"></h2>
+            <p class="text-lg leading-relaxed max-w-3xl mx-auto text-gray-600" data-id="locations-desc"></p>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div class="snack-card p-6 text-center">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center mx-auto mb-4">
+                <img src="https://api.iconify.design/mdi/hospital-building.svg?color=white&amp;width=32&amp;height=32"
+                  alt="Hospital" class="w-8 h-8" onerror="this.style.display='none'">
+              </div>
+              <h4 class="font-display font-bold text-gray-800" data-i18n="loc_hospitals">Hospitals 🏥</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Partner -->
+      <section id="partners" class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div
+            class="w-32 h-32 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mx-auto mb-8 icon-bounce">
+            <img src="https://api.iconify.design/mdi/handshake.svg?color=white&amp;width=64&amp;height=64"
+              alt="Partners" class="w-16 h-16" onerror="this.style.display='none'">
+          </div>
+
+          <span class="vending-badge mb-6" data-i18n="trusted_by">Trusted by Partners 🤝</span>
+
+          <h1 class="font-display text-4xl sm:text-5xl font-bold mb-6 mt-6 text-gray-800"
+            data-i18n="partners_page_title">Our Amazing Partners!</h1>
+
+          <p class="text-xl leading-relaxed mb-10 text-gray-600" data-i18n="partners_page_desc">
+            We collaborate with awesome brands to bring great snacks everywhere. Here are a few partners who trust SAPORSI.
+          </p>
+
+          <!-- Partner Logos -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-10">
+            <div class="p-5 rounded-2xl border border-orange-100 bg-orange-50/40 hover:bg-orange-50 transition">
+              <img src="./images/logo.png" alt="Partner 1"
+                class="h-10 mx-auto object-contain mb-3" onerror="this.style.display='none'">
+              <p class="text-sm font-semibold text-gray-700">FreshBite</p>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-orange-100 bg-orange-50/40 hover:bg-orange-50 transition">
+              <img src="./images/logo.png" alt="Partner 2"
+                class="h-10 mx-auto object-contain mb-3" onerror="this.style.display='none'">
+              <p class="text-sm font-semibold text-gray-700">Urban Eats</p>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-orange-100 bg-orange-50/40 hover:bg-orange-50 transition">
+              <img src="./images/logo.png" alt="Partner 3"
+                class="h-10 mx-auto object-contain mb-3" onerror="this.style.display='none'">
+              <p class="text-sm font-semibold text-gray-700">Snack Lab</p>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-orange-100 bg-orange-50/40 hover:bg-orange-50 transition">
+              <img src="./images/logo.png" alt="Partner 4"
+                class="h-10 mx-auto object-contain mb-3" onerror="this.style.display='none'">
+              <p class="text-sm font-semibold text-gray-700">FitFuel</p>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-orange-100 bg-orange-50/40 hover:bg-orange-50 transition">
+              <img src="./images/logo.png" alt="Partner 5"
+                class="h-10 mx-auto object-contain mb-3" onerror="this.style.display='none'">
+              <p class="text-sm font-semibold text-gray-700">Campus Kitchen</p>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-orange-100 bg-orange-50/40 hover:bg-orange-50 transition">
+              <img src="./images/logo.png" alt="Partner 6"
+                class="h-10 mx-auto object-contain mb-3" onerror="this.style.display='none'">
+              <p class="text-sm font-semibold text-gray-700">Daily Brew</p>
+            </div>
+          </div>
+
+          <a href="#contacthome" class="btn-vending inline-flex items-center justify-center gap-2">
+            <span data-i18n="become_partner">Become a Partner! 🤝</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- <section id="contact-form" class="py-24 bg-white vending-pattern-mid">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-10">
+            <span class="vending-badge mb-6">Contact Form ✉️</span>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-800">Tell us your location</h2>
+            <p class="text-gray-600 mt-3">We’ll recommend the best machine + product mix for your traffic.</p>
+          </div>
+
+          <form class="snack-card p-8">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Name</label>
+                <input class="w-full px-4 py-3 rounded-2xl border border-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-300" />
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Phone / WhatsApp</label>
+                <input class="w-full px-4 py-3 rounded-2xl border border-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-300" />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                <input class="w-full px-4 py-3 rounded-2xl border border-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-300" />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                <textarea rows="4" class="w-full px-4 py-3 rounded-2xl border border-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-300"></textarea>
+              </div>
+            </div>
+
+            <button type="button" class="btn-vending w-full mt-6">Send 🎉</button>
+          </form>
+        </div>
+      </section> -->
+
+      
+      <!-- CTA Section -->
+      <section id="contact" class="py-24 bg-gradient-to-br from-orange-500 to-red-600">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6" data-i18n="cta_title">
+            Ready to Vend With Us? 🚀</h2>
+          <p class="text-xl text-white/90 mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Let's partner up and bring
+            amazing snacking experiences to your locations! Get in touch today!</p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="#contact-form"
+              class="btn-secondary text-center"
+              style="background: white; color: var(--color-primary); border-color: white;"> <span
+                data-i18n="cta_book_btn">Book a Machine 🎉</span> </a> <a id="cta-whatsapp-btn" href="#" target="_blank"
+              rel="noopener noreferrer" class="btn-secondary text-center flex items-center justify-center gap-2"
+              style="background: transparent; color: white; border-color: white;"> <img
+                src="https://api.iconify.design/mdi/whatsapp.svg?color=white&amp;width=24&amp;height=24" alt="WhatsApp"
+                class="w-6 h-6" onerror="this.style.display='none'"> <span data-i18n="cta_wa_btn">Chat on WhatsApp
+                💬</span> </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Footer -->
+      <footer class="py-16 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid md:grid-cols-4 gap-12 mb-12">
+            <div class="md:col-span-2">
+              <div class="flex items-center space-x-3 mb-6"><img
+                  src="./images/logo.png"
+                  alt="Saporsi By Kyojin" class="w-14 h-14 rounded-2xl border-3 border-orange-400"
+                  onerror="this.src='https://placehold.co/80x80/FF6B35/FFFFFF?text=S&amp;font=fredoka'; this.alt='Logo';">
+                <div><span class="font-display text-2xl font-bold text-orange-400">Saporsi</span> <span
+                    class="text-xs block -mt-1 font-bold text-amber-400">By Kyojin</span>
+                </div>
+              </div>
+              <p class="text-gray-400 leading-relaxed max-w-md" data-i18n="footer_desc">Your friendly vending partner
+                bringing snacks and happiness to Indonesia, one machine at a time! 🍫✨</p>
+            </div>
+            <div>
+              <h4 class="font-display font-bold text-lg mb-4" data-i18n="footer_nav">Quick Links</h4>
+              <ul class="space-y-3">
+                <li><a href="#about" class="text-gray-400 hover:text-orange-400 transition-colors"
+                    data-i18n="nav_about">About</a></li>
+                <li><a href="#services" class="text-gray-400 hover:text-orange-400 transition-colors"
+                    data-i18n="nav_services">Services</a></li>
+                <li><a href="#gallery" class="text-gray-400 hover:text-orange-400 transition-colors"
+                    data-i18n="nav_gallery">Gallery</a></li>
+                <li><a href="#contact" class="text-gray-400 hover:text-orange-400 transition-colors"
+                    data-i18n="nav_contact">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-display font-bold text-lg mb-4" data-i18n="footer_contact">Contact Us</h4>
+              <ul class="space-y-3 text-gray-400">
+                <li class="flex items-center gap-2"><img
+                    src="https://api.iconify.design/mdi/email.svg?color=%23FF6B35&amp;width=20&amp;height=20"
+                    alt="Email" class="w-5 h-5" onerror="this.style.display='none'"> <span>hello@saporsi.id</span></li>
+                <li class="flex items-center gap-2"><img
+                    src="https://api.iconify.design/mdi/phone.svg?color=%23FF6B35&amp;width=20&amp;height=20"
+                    alt="Phone" class="w-5 h-5" onerror="this.style.display='none'"> <span id="footer-phone">+62 812
+                    3456 7890</span></li>
+                <li class="flex items-center gap-2"><img
+                    src="https://api.iconify.design/mdi/map-marker.svg?color=%23FF6B35&amp;width=20&amp;height=20"
+                    alt="Location" class="w-5 h-5" onerror="this.style.display='none'"> <span>Jakarta, Indonesia
+                    🇮🇩</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="border-t border-gray-800 pt-8 text-center">
+            <p class="text-gray-500 text-sm">© 2024 Saporsi By Kyojin. <span data-i18n="footer_rights">Made with ❤️ and
+                lots of snacks!</span></p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/api.js"></script>
+</body>
+
+</html>
