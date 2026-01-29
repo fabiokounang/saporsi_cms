@@ -5,8 +5,8 @@
  * - Fix: setLanguage aman walau dipanggil sebelum data siap
  */
 
-const API_URL = "https://api.saporsi.com/api/public/site"; // <-- UBAH kalau endpoint kamu beda
-const ASSET_BASE = "http://api.saporsi.com"; // contoh: "https://domain.com" kalau image path perlu absolute
+const API_URL = "https://cms.saporsi.com/api/public/site"; // <-- UBAH kalau endpoint kamu beda
+const ASSET_BASE = "http://cms.saporsi.com"; // contoh: "https://domain.com" kalau image path perlu absolute
 
 let SITE = null;
 let LANG = "id";
