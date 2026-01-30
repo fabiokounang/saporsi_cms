@@ -374,6 +374,9 @@ function renderServices() {
     chart: "https://api.iconify.design/mdi/chart-bar.svg?color=white&width=48&height=48",
     trophy: "https://api.iconify.design/mdi/trophy.svg?color=white&width=48&height=48",
     rocket: "https://api.iconify.design/mdi/rocket-launch.svg?color=white&width=48&height=48",
+    finance: "https://api.iconify.design/mdi/finance.svg?color=white&width=48&height=48",
+    bullhorn: "https://api.iconify.design/mdi/bullhorn-outline.svg?color=white&width=48&height=48",
+    kitchen: "https://api.iconify.design/mdi/kitchen.svg?color=white&width=48&height=48"
   };
 
   setHTML(
