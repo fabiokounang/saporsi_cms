@@ -379,7 +379,7 @@ function renderServices() {
         // 👉 ICON LOGIC (IMPORTANT)
         let iconSrc = "";
         if (it.icon_key && it.icon_key.startsWith("/uploads/")) {
-          iconSrc = BASE_URL + it.icon_key;
+          iconSrc = ASSET_BASE + it.icon_key;
         } else iconSrc = "https://api.iconify.design/mdi/clock-fast.svg?color=white&width=48&height=48";
 
         return `
