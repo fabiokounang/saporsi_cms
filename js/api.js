@@ -5,8 +5,12 @@
  * - Fix: setLanguage aman walau dipanggil sebelum data siap
  */
 
-const API_URL = "https://cms.saporsi.com/api/public/site"; // <-- UBAH kalau endpoint kamu beda
-const ASSET_BASE = "http://cms.saporsi.com"; // contoh: "https://domain.com" kalau image path perlu absolute
+// const API_URL = "https://cms.saporsi.com/api/public/site"; // <-- UBAH kalau endpoint kamu beda
+// const ASSET_BASE = "http://cms.saporsi.com"; // contoh: "https://domain.com" kalau image path perlu absolute
+
+const API_URL = "http://localhost:3000/api/public/site"; // <-- UBAH kalau endpoint kamu beda
+const ASSET_BASE = "http://localhost:3000"; // contoh: "https://domain.com" kalau image path perlu absolute
+
 
 let SITE = null;
 let LANG = "id";
@@ -343,13 +347,10 @@ function renderServices() {
   const services = SITE?.services;
   if (!services) return;
 
-  // title + subtitle
-  const badge = qs("#services span#services-badge");
-  const titleEl = qs("#services h2#services-title");
-  const subEl = qs("#services p#services-description");
-  setText(badge, t(services, "badge_id", "badge_en"));
-  setText(titleEl, t(services, "title_id", "title_en"));
-  setText(subEl, t(services, "subtitle_id", "subtitle_en"));
+  // header
+  setText(qs("#services span#services-badge"), t(services, "badge_id", "badge_en"));
+  setText(qs("#services h2#services-title"), t(services, "title_id", "title_en"));
+  setText(qs("#services p#services-description"), t(services, "subtitle_id", "subtitle_en"));
 
   const grid = qs("#services .grid.md\\:grid-cols-2.lg\\:grid-cols-3.gap-8");
   if (!grid) return;
@@ -367,17 +368,7 @@ function renderServices() {
     red: "from-red-400 to-rose-500",
   };
 
-  const iconMap = {
-    clock: "https://api.iconify.design/mdi/clock-fast.svg?color=white&width=48&height=48",
-    cashless: "https://api.iconify.design/mdi/contactless-payment.svg?color=white&width=48&height=48",
-    team: "https://api.iconify.design/mdi/account-group.svg?color=white&width=48&height=48",
-    chart: "https://api.iconify.design/mdi/chart-bar.svg?color=white&width=48&height=48",
-    trophy: "https://api.iconify.design/mdi/trophy.svg?color=white&width=48&height=48",
-    rocket: "https://api.iconify.design/mdi/rocket-launch.svg?color=white&width=48&height=48",
-    finance: "https://api.iconify.design/mdi/finance.svg?color=white&width=48&height=48",
-    bullhorn: "https://api.iconify.design/mdi/bullhorn-outline.svg?color=white&width=48&height=48",
-    kitchen: "https://api.iconify.design/mdi/kitchen.svg?color=white&width=48&height=48"
-  };
+  const BASE_URL = "http://localhost:3000";
 
   setHTML(
     grid,
@@ -386,21 +377,40 @@ function renderServices() {
         const title = t(it, "title_id", "title_en");
         const desc = t(it, "description_id", "description_en");
         const bg = accentMap[it.accent] || accentMap.orange;
-        const icon = iconMap[it.icon_key] || iconMap.clock;
+
+        // 👉 ICON LOGIC (IMPORTANT)
+        let iconSrc = "";
+        if (it.icon_key && it.icon_key.startsWith("/uploads/")) {
+          iconSrc = BASE_URL + it.icon_key;
+        } else iconSrc = "https://api.iconify.design/mdi/clock-fast.svg?color=white&width=48&height=48";
 
         return `
-        <div class="snack-card p-8 text-center">
-          <div class="w-24 h-24 rounded-3xl bg-gradient-to-br ${bg} flex items-center justify-center mx-auto mb-6 icon-bounce"
-            style="animation-delay: ${idx * 0.2}s;">
-            <img src="${icon}" alt="${title}" class="w-12 h-12" onerror="this.style.display='none'">
+          <div class="snack-card p-8 text-center">
+            <div class="w-24 h-24 rounded-3xl 
+                flex items-center justify-center mx-auto mb-6 icon-bounce"
+                style="animation-delay:${idx * 0.2}s;">
+              <img
+                src="${iconSrc}"
+                alt="${title || "service icon"}"
+                class="w-22 h-22 object-contain"
+                onerror="this.style.display='none'"
+              >
+            </div>
+
+            <h3 class="font-display text-2xl font-bold mb-4 text-gray-800">
+              ${title || ""}
+            </h3>
+
+            <p class="text-gray-600">
+              ${desc || ""}
+            </p>
           </div>
-          <h3 class="font-display text-2xl font-bold mb-4 text-gray-800">${title || ""}</h3>
-          <p class="text-gray-600">${desc || ""}</p>
-        </div>`;
+        `;
       })
       .join("")
   );
 }
+
 
 function renderGallery() {
   const gallery = SITE?.gallery;
