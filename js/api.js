@@ -368,8 +368,6 @@ function renderServices() {
     red: "from-red-400 to-rose-500",
   };
 
-  const BASE_URL = "http://localhost:3000";
-
   setHTML(
     grid,
     items
