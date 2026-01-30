@@ -491,6 +491,7 @@ function renderLocations() {
 
 function renderPartners() {
   const partners = SITE?.partners;
+  const navbar = SITE?.navbar;
   if (!partners) return;
 
   setText(qs("#partners h1[data-i18n='partners_page_title']"), t(partners, "title_id", "title_en"));
@@ -500,7 +501,7 @@ function renderPartners() {
   const partnerCta = qs("#partners a.btn-vending");
   if (partnerCta) {
     setText(partnerCta.querySelector("span") || partnerCta, t(partners, "cta_label_id", "cta_label_en"));
-    setAttr(partnerCta, "href", partners.cta_url || "#");
+    setAttr(partnerCta, "href", navbar.cta_url || "#");
     setAttr(partnerCta, "target", "_blank");
   }
 
