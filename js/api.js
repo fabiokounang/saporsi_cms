@@ -549,7 +549,7 @@ function renderCTA() {
   setText(title, t(cta, "title_id", "title_en"));
   setText(subtitle, t(cta, "subtitle_id", "subtitle_en"));
 
-  btn.href = cta.button_url || "#contact";
+  btn.href = cta.primary_url || "#contact";
   btn.textContent = t(cta, "primary_label_id", "primary_label_en");
 }
 
