@@ -409,7 +409,6 @@ function renderServices() {
   );
 }
 
-
 function renderGallery() {
   const gallery = SITE?.gallery;
   if (!gallery) return;
@@ -538,6 +537,23 @@ function renderPartners() {
   );
 }
 
+function renderCTA() {
+  const cta = SITE?.cta;
+  console.log(cta);
+  if (!cta) return;
+
+  const title = qs("#cta-title");
+  const subtitle = qs("#cta-desc");
+  const btn = qs("#cta-button");
+
+  setText(title, t(cta, "title_id", "title_en"));
+  setText(subtitle, t(cta, "subtitle_id", "subtitle_en"));
+
+  btn.href = cta.button_url || "#contact";
+  btn.textContent = t(cta, "primary_label_id", "primary_label_en");
+}
+
+
 function renderFooter() {
   const footer = SITE?.footer;
   if (!footer) return;
@@ -597,6 +613,7 @@ window.__SAPORSI_APPLY_LANGUAGE__ = function applyLanguage(lang) {
   renderGallery();
   renderLocations();
   renderPartners();
+  renderCTA();
   renderFooter();
 
   toggleLangButtons();
