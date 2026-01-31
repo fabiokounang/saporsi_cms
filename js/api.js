@@ -539,7 +539,6 @@ function renderPartners() {
 
 function renderCTA() {
   const cta = SITE?.cta;
-  console.log(cta);
   if (!cta) return;
 
   const title = qs("#cta-title");

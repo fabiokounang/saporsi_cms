@@ -3,10 +3,11 @@
   --color-surface: #FFFFFF;
   --color-text: #2C1810;
   --color-primary: #da8a2b;
-  --color-secondary: #De8b2a;
-  --color-accent: #CD3527;
+  --color-secondary: #e49e34;
+  --color-accent: #a92923;
   --color-success: #4CAF50;
-  --color-info: #2196F3;
+  --color-info:#44a09f;
+  --color-grey: #5a6e68;
 }
 
 * {
