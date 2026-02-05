@@ -32,6 +32,7 @@ body {
   background-color: var(--color-bg);
 }
 
+
 .font-display {
   font-family: 'Montserrat', sans-serif;
 }
@@ -255,6 +256,14 @@ body {
   background-image: url('./images/saporsi-1.png');
   background-repeat: no-repeat;
   background-size: 50%;
+  background-position: center center;
+}
+
+.vending-pattern-small {
+  background-color: #eeeae1;
+  background-image: url('./images/saporsi-1.png');
+  background-repeat: no-repeat;
+  background-size: 40%;
   background-position: center center;
 }
 

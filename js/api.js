@@ -76,6 +76,16 @@ function safeUrl(path) {
   return `${ASSET_BASE}/${path}`;
 }
 
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
 function normalizeNavUrl(url) {
   if (!url) return "#";
   const u = String(url).trim();
@@ -142,9 +152,13 @@ function renderNavbar() {
     setAttr(logoImg, "src", safeUrl(navbar.logo_path));
   }
 
+  // =========================
   // CTA label + url (desktop + mobile)
-  const ctaDesktop = qs("nav .hidden.lg\\:flex a.btn-vending");
+  // =========================
+  // Desktop CTA ada di wrapper: <div class="hidden desk:flex ..."> ... <a class="btn-vending">
+  const ctaDesktop = qs("nav .hidden.desk\\:flex a.btn-vending");
   const ctaMobile = qs("#mobile-menu a.btn-vending");
+
   const ctaLabel = LANG === "en" ? navbar.cta_label_en : navbar.cta_label_id;
 
   if (ctaDesktop) {
@@ -158,43 +172,52 @@ function renderNavbar() {
     setAttr(ctaMobile, "target", "_blank");
   }
 
-  // show/hide language toggle
-  const langWrapDesktop = qs("nav .hidden.lg\\:flex .flex.items-center.border-3");
+  // =========================
+  // show/hide language toggle (desktop + mobile)
+  // =========================
+  // Desktop lang toggle ada di: nav .hidden.desk:flex ... (div border-3 ...)
+  const langWrapDesktop = qs("nav .hidden.desk\\:flex .border-3.border-orange-200");
   const langWrapMobile = qs("#mobile-menu .flex.items-center.space-x-2.py-4");
-  const show = navbar.show_language_toggle == "1";
 
+  const show = navbar.show_language_toggle == "1";
   if (langWrapDesktop) langWrapDesktop.style.display = show ? "" : "none";
   if (langWrapMobile) langWrapMobile.style.display = show ? "" : "none";
 
+  // =========================
   // navbar items
+  // =========================
   const items = (navbar.items || [])
     .filter((x) => x.is_active == 1)
     .sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999));
 
-  // desktop nav container
-  const desktopNav = qs("nav .hidden.lg\\:flex.items-center.space-x-8");
+  // Desktop nav container (yang link-link menu)
+  const desktopNav = qs("nav .hidden.desk\\:flex.items-center.space-x-8");
   if (desktopNav) {
-    setHTML(desktopNav, items.map((it) => {
-      const label = LANG === "en" ? it.label_en : it.label_id;
-      const url = normalizeNavUrl(it.url);
-      return `
-        <a href="${url}"
-          class="font-bold text-gray-700 hover:text-orange-500 transition-colors">
-          ${label || ""}
-        </a>
-      `;
-    }).join(""));
+    setHTML(
+      desktopNav,
+      items
+        .map((it) => {
+          const label = LANG === "en" ? it.label_en : it.label_id;
+          const url = normalizeNavUrl(it.url);
+          return `
+            <a href="${url}"
+              class="font-bold text-gray-700 hover:text-orange-500 transition-colors">
+              ${label || ""}
+            </a>
+          `;
+        })
+        .join("")
+    );
   }
 
-  // mobile nav container
+  // Mobile nav container (links + language buttons + CTA)
   const mobileNavWrap = qs("#mobile-menu .mt-16.space-y-4");
   if (mobileNavWrap) {
-    // di wrap ini ada links + language buttons + CTA
-    // kita hanya replace bagian links saja biar tidak ganggu yang lain
-    // cara aman: cari semua link sebelum div language toggle
+    // Cari div language toggle di dalam wrap (supaya kita insert link sebelum itu)
     const langDiv = qs("#mobile-menu .mt-16.space-y-4 > .flex.items-center.space-x-2.py-4");
+
     if (langDiv) {
-      // remove existing links sebelum langDiv
+      // remove existing links sebelum langDiv (supaya tidak dobel)
       let node = mobileNavWrap.firstElementChild;
       while (node && node !== langDiv) {
         const next = node.nextElementSibling;
@@ -212,15 +235,18 @@ function renderNavbar() {
         };
         a.className =
           "block py-3 text-lg font-bold border-b-2 border-orange-100 hover:text-orange-500";
-        a.textContent = LANG === "en" ? it.label_en : it.label_id;
+        a.textContent = (LANG === "en" ? it.label_en : it.label_id) || "";
         frag.appendChild(a);
       });
+
       mobileNavWrap.insertBefore(frag, langDiv);
     }
   }
 
+  // sync active button state (kalau kamu punya)
   toggleLangButtons();
 }
+
 
 function renderHero() {
   const hero = SITE?.hero;
@@ -409,6 +435,64 @@ function renderServices() {
   );
 }
 
+function renderHowItWorks() {
+  const hitw = SITE?.howitworks;
+  if (!hitw) return;
+
+  // ===== Header =====
+  const badgeEl = qs("#how-it-works-badge");
+  const titleEl = qs("#how-it-works-title");
+  const subEl = qs("#how-it-works-subtitle");
+
+  setText(badgeEl, t(hitw, "badge_id", "badge_en"));
+  setText(titleEl, t(hitw, "title_id", "title_en"));
+  setText(subEl, t(hitw, "subtitle_id", "subtitle_en"));
+
+  // ===== Grid =====
+  const grid = qs("#how-it-works .grid.md\\:grid-cols-2.lg\\:grid-cols-4.gap-8");
+  if (!grid) return;
+
+  const items = (hitw.items || [])
+    .filter(i => String(i.is_active) === "1")
+    .sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999));
+
+  const BASE = (window.API_BASE || "").replace(/\/$/, "");
+  const bgMap = {
+    choose: "from-orange-400 to-red-500",
+    ready: "from-amber-400 to-orange-500",
+    machine: "from-blue-400 to-purple-500",
+    selling: "from-green-400 to-teal-500",
+  };
+  setHTML(
+    grid,
+    items.map((it, idx) => {
+      const title = t(it, "title_id", "title_en");
+      const desc = t(it, "description_id", "description_en");
+      const iconSrc = it.icon_path ? safeUrl(BASE + it.icon_path) : null;
+      const color = bgMap[Object.keys(bgMap)[idx]]
+      return `
+        <div class="snack-card p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mx-auto mb-6">
+            ${
+              iconSrc
+                ? `<img src="${iconSrc}" alt="${escapeHtml(title)}" class="w-100 h-100" onerror="this.style.display='none'">`
+                : `<span class="font-display text-white font-bold text-2xl">${idx + 1}</span>`
+            }
+          </div>
+
+          <h3 class="font-display text-xl font-bold mb-3 text-gray-800">
+            ${escapeHtml(title || "")}
+          </h3>
+
+          <p class="text-gray-600">
+            ${escapeHtml(desc || "")}
+          </p>
+        </div>
+      `;
+    }).join("")
+  );
+}
+
 function renderGallery() {
   const gallery = SITE?.gallery;
   if (!gallery) return;
@@ -537,6 +621,149 @@ function renderPartners() {
   );
 }
 
+function renderEarlyProgram() {
+  const ep = SITE?.earlyprogram; // ✅ sesuai API: earlyprogram
+  if (!ep) return;
+
+  const root = qs("#early-program");
+  if (!root) return;
+
+  const setText = (sel, val) => {
+    const el = root.querySelector(sel);
+    if (el) el.textContent = val ?? "";
+  };
+
+  /* =========================
+     HEADER
+     ========================= */
+  setText(".text-center .vending-badge", t(ep, "label_id", "label_en"));
+  setText(".text-center h2", t(ep, "title_id", "title_en"));
+  setText(".text-center p", t(ep, "desc_id", "desc_en"));
+
+  /* =========================
+     HIGHLIGHT STRIP (LEFT)
+     ========================= */
+  setText(".snack-card .mb-7 .font-display.font-bold", t(ep, "highlight_title_id", "highlight_title_en"));
+  setText(".snack-card .mb-7 .text-gray-600.mt-1", t(ep, "highlight_desc_id", "highlight_desc_en"));
+
+  /* =========================
+     BENEFITS TITLE
+     ========================= */
+  setText(".snack-card h3.font-display", t(ep, "benefits_title_id", "benefits_title_en"));
+
+  /* =========================
+     LEFT CTA
+     ========================= */
+  const leftCtas = root.querySelectorAll(".snack-card .mt-8 a");
+  const leftCta1 = leftCtas?.[0] || null;
+  const leftCta2 = leftCtas?.[1] || null;
+
+  if (leftCta1) {
+    leftCta1.textContent = t(ep, "cta_primary_id", "cta_primary_en");
+    leftCta1.setAttribute("href", ep.cta_primary_url || "#contact");
+  }
+  if (leftCta2) {
+    leftCta2.textContent = t(ep, "cta_secondary_id", "cta_secondary_en");
+    leftCta2.setAttribute("href", ep.cta_secondary_url || "#contact");
+  }
+
+  /* =========================
+     RIGHT CARD
+     ========================= */
+  const rightCard = root.querySelector(".grid.lg\\:grid-cols-2 > .relative");
+  if (rightCard) {
+    const rightTitle = rightCard.querySelector(".font-display.font-bold.text-xl");
+    if (rightTitle) rightTitle.textContent = t(ep, "right_title_id", "right_title_en");
+
+    const rightBadge = rightCard.querySelector("span.px-4.py-2");
+    if (rightBadge) rightBadge.textContent = t(ep, "right_badge_id", "right_badge_en");
+
+    const rightDesc = rightCard.querySelector("p.text-gray-600.leading-relaxed");
+    if (rightDesc) rightDesc.textContent = t(ep, "right_desc_id", "right_desc_en");
+
+    // KPI cards
+    const kpiCards = rightCard.querySelectorAll(".grid.grid-cols-2.gap-4.mb-8 > div");
+    const kpis = [
+      { lId: "kpi1_label_id", lEn: "kpi1_label_en", vId: "kpi1_value_id", vEn: "kpi1_value_en" },
+      { lId: "kpi2_label_id", lEn: "kpi2_label_en", vId: "kpi2_value_id", vEn: "kpi2_value_en" },
+      { lId: "kpi3_label_id", lEn: "kpi3_label_en", vId: "kpi3_value_id", vEn: "kpi3_value_en" },
+      { lId: "kpi4_label_id", lEn: "kpi4_label_en", vId: "kpi4_value_id", vEn: "kpi4_value_en" },
+    ];
+
+    for (let i = 0; i < 4; i++) {
+      const card = kpiCards[i];
+      if (!card) continue;
+
+      const labelEl = card.querySelector(".text-sm.text-gray-600");
+      const valueEl = card.querySelector(".font-display.font-bold");
+
+      const meta = kpis[i];
+      if (labelEl) labelEl.textContent = t(ep, meta.lId, meta.lEn);
+      if (valueEl) valueEl.textContent = t(ep, meta.vId, meta.vEn);
+    }
+
+    // Note
+    const noteBox = rightCard.querySelector(".rounded-2xl.border-2.border-orange-100.bg-white");
+    if (noteBox) {
+      const noteTitle = noteBox.querySelector(".font-display.font-bold.text-gray-800");
+      const noteDesc = noteBox.querySelector(".text-gray-600");
+      if (noteTitle) noteTitle.textContent = t(ep, "note_title_id", "note_title_en");
+      if (noteDesc) noteDesc.textContent = t(ep, "note_desc_id", "note_desc_en");
+    }
+
+    // Right CTA primary
+    const rightCtaPrimary = rightCard.querySelector(".mt-8 a.btn-vending");
+    if (rightCtaPrimary) {
+      rightCtaPrimary.textContent = t(ep, "right_cta_primary_id", "right_cta_primary_en");
+      rightCtaPrimary.setAttribute("href", ep.right_cta_primary_url || "#contact");
+    }
+
+    // WA button href (label di HTML bisa tetap "WhatsApp", atau kamu mau juga di-translate tinggal tambah field)
+    const waBtn = qs("#early-wa-btn");
+    if (waBtn) waBtn.setAttribute("href", ep.whatsapp_url || "#");
+  }
+
+  /* =========================
+     FLOATING LABEL
+     ========================= */
+  const floatWrap = root.querySelector(".absolute.-bottom-6.left-6");
+  if (floatWrap) {
+    const floatTitle = floatWrap.querySelector(".text-sm.font-display.font-bold");
+    const floatSub = floatWrap.querySelector(".text-xs.text-gray-600");
+    if (floatTitle) floatTitle.textContent = t(ep, "float_title_id", "float_title_en");
+    if (floatSub) floatSub.textContent = t(ep, "float_sub_id", "float_sub_en");
+  }
+
+  /* =========================
+     BENEFITS LIST (FROM DB)
+     API: earlyprogram.items
+     ========================= */
+  const items = (ep.items || [])
+    .filter(x => Number(x.is_active) === 1)
+    .sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999));
+
+  const lis = root.querySelectorAll("ul.space-y-4 > li");
+
+  for (let i = 0; i < 4; i++) {
+    const li = lis[i];
+    if (!li) continue;
+
+    const it = items[i];
+
+    const titleEl = li.querySelector("div.font-bold.text-gray-800");
+    const descEl = li.querySelector("div.text-gray-600");
+
+    if (titleEl) titleEl.textContent = it ? t(it, "title_id", "title_en") : "";
+    if (descEl) descEl.textContent = it ? t(it, "description_id", "description_en") : "";
+
+    // icon replace (kalau ada upload)
+    if (it?.icon_path) {
+      const img = li.querySelector("img");
+      if (img) img.src = resolveAssetUrl(it.icon_path);
+    }
+  }
+}
+
 function renderCTA() {
   const cta = SITE?.cta;
   if (!cta) return;
@@ -551,7 +778,6 @@ function renderCTA() {
   btn.href = cta.primary_url || "#contact";
   btn.textContent = t(cta, "primary_label_id", "primary_label_en");
 }
-
 
 function renderFooter() {
   const footer = SITE?.footer;
@@ -609,9 +835,11 @@ window.__SAPORSI_APPLY_LANGUAGE__ = function applyLanguage(lang) {
   renderHero();
   renderAbout();
   renderServices();
+  renderHowItWorks();
   renderGallery();
   renderLocations();
   renderPartners();
+  renderEarlyProgram();
   renderCTA();
   renderFooter();
 

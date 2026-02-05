@@ -128,3 +128,13 @@ function navigateTo(page) {
     }
   }
 })();
+
+tailwind.config = {
+  theme: {
+    extend: {
+      screens: {
+        desk: "1300px", // >=1300 dianggap desktop
+      },
+    },
+  },
+};
